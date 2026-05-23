@@ -1,3 +1,2 @@
-.env*
-behaviour_data.csv*
+*.env
 isolation_forest.pkl*
