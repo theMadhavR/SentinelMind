@@ -1,0 +1,3 @@
+.env*
+behaviour_data.csv*
+isolation_forest.pkl*

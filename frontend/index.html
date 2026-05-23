@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Cybersecurity System</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Adaptive Cybersecurity System</h1>
+            </div>
+            <div class="user-info" id="userInfo">
+                <span id="username">Not logged in</span>
+                <button id="logoutBtn" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Login Section (Initially visible) -->
+            <div id="loginSection" class="card login-card">
+                <h2><i class="fas fa-sign-in-alt"></i> User Login</h2>
+                <div class="form-group">
+                    <label for="usernameInput">Username:</label>
+                    <input type="text" id="usernameInput" placeholder="Enter username" value="demo_user">
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">Password:</label>
+                    <input type="password" id="passwordInput" placeholder="Enter password" value="password123">
+                </div>
+                <div class="button-group">
+                    <button id="loginBtn" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="registerBtn" class="btn-secondary">
+                        <i class="fas fa-user-plus"></i> Register New User
+                    </button>
+                </div>
+                <div class="demo-credentials">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Username: demo_user</p>
+                    <p>Password: password123</p>
+                </div>
+            </div>
+
+            <!-- Dashboard (Initially hidden) -->
+            <div id="dashboardSection" class="dashboard" style="display: none;">
+                <!-- Top Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-card" id="riskCard">
+                        <div class="stat-icon risk-low">
+                            <i class="fas fa-shield-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Risk Level</h3>
+                            <div class="stat-value" id="riskLevel">LOW</div>
+                            <div class="stat-desc">Current threat level</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Anomaly Score</h3>
+                            <div class="stat-value" id="anomalyScore">0.00</div>
+                            <div class="stat-desc">0 = normal, 1 = anomalous</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Active Alerts</h3>
+                            <div class="stat-value" id="activeAlerts">0</div>
+                            <div class="stat-desc">Security alerts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Session Duration</h3>
+                            <div class="stat-value" id="sessionDuration">0m</div>
+                            <div class="stat-desc">Current session</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="main-dashboard">
+                    <!-- Left Column: Actions and Alerts -->
+                    <div class="left-column">
+                        <!-- User Actions Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-user-cog"></i> User Actions</h3>
+                                <div class="action-count">
+                                    Actions: <span id="actionCount">0</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="action-buttons">
+                                    <button class="action-btn view" data-action="view">
+                                        <i class="fas fa-eye"></i> View File
+                                    </button>
+                                    <button class="action-btn download" data-action="download">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="action-btn edit" data-action="edit">
+                                        <i class="fas fa-edit"></i> Edit Document
+                                    </button>
+                                    <button class="action-btn delete" data-action="delete">
+                                        <i class="fas fa-trash"></i> Delete Item
+                                    </button>
+                                    <button class="action-btn simulate" id="simulateAttackBtn">
+                                        <i class="fas fa-bug"></i> Simulate Attack
+                                    </button>
+                                </div>
+                                
+                                <div class="recent-actions">
+                                    <h4>Recent Actions</h4>
+                                    <div id="recentActionsList" class="actions-list">
+                                        <!-- Recent actions will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Alerts Card -->
+                        <div class="card">
+                            <div class="card-header alert-header">
+                                <h3><i class="fas fa-exclamation-triangle"></i> Security Alerts</h3>
+                                <span class="alert-badge" id="alertBadge">0</span>
+                            </div>
+                            <div class="card-body">
+                                <div id="alertsList" class="alerts-list">
+                                    <!-- Alerts will be added here -->
+                                    <div class="no-alerts">
+                                        <i class="fas fa-check-circle"></i>
+                                        <p>No security alerts at this time</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Charts and Behavior -->
+                    <div class="right-column">
+                        <!-- Behavior Profile Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-user-chart"></i> Behavior Profile</h3>
+                                <div class="profile-confidence">
+                                    Confidence: <span id="profileConfidence">0%</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="behavior-stats">
+                                    <div class="behavior-stat">
+                                        <span class="stat-label">Normal Login Hours:</span>
+                                        <span class="stat-value" id="normalHours">9AM - 5PM</span>
+                                    </div>
+                                    <div class="behavior-stat">
+                                        <span class="stat-label">Avg Session Duration:</span>
+                                        <span class="stat-value" id="avgSession">30m</span>
+                                    </div>
+                                    <div class="behavior-stat">
+                                        <span class="stat-label">Common Actions:</span>
+                                        <span class="stat-value" id="commonActions">View, Edit</span>
+                                    </div>
+                                    <div class="behavior-stat">
+                                        <span class="stat-label">Device Pattern:</span>
+                                        <span class="stat-value" id="devicePattern">Chrome, Windows</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="chart-container">
+                                    <canvas id="behaviorChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anomaly Detection Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-robot"></i> Anomaly Detection</h3>
+                                <div class="ml-status">
+                                    <span class="status-dot active"></span>
+                                    ML Model Active
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="anomaly-meter">
+                                    <div class="meter-labels">
+                                        <span>Normal</span>
+                                        <span>Suspicious</span>
+                                        <span>Anomalous</span>
+                                    </div>
+                                    <div class="meter-bar">
+                                        <div class="meter-fill" id="meterFill"></div>
+                                    </div>
+                                    <div class="meter-thresholds">
+                                        <div class="threshold" style="left: 30%;">Low</div>
+                                        <div class="threshold" style="left: 70%;">High</div>
+                                    </div>
+                                    <div class="meter-indicator" id="meterIndicator" style="left: 0%;">
+                                        <div class="indicator-dot"></div>
+                                        <div class="indicator-value">0.00</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="detection-details">
+                                    <h4>Detection Details</h4>
+                                    <div id="detectionDetails">
+                                        <p>No anomalies detected. System is monitoring behavior patterns.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Panel -->
+                <div class="card simulation-card" id="simulationPanel" style="display: none;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-flask"></i> Attack Simulation</h3>
+                        <button id="closeSimulationBtn" class="btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <p>Simulate different attack scenarios to test the anomaly detection system:</p>
+                        
+                        <div class="simulation-options">
+                            <div class="simulation-option" data-type="insider_threat">
+                                <div class="option-icon">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <div class="option-content">
+                                    <h4>Insider Threat</h4>
+                                    <p>Simulates an employee accessing data at unusual hours</p>
+                                    <button class="btn-simulate" data-type="insider_threat">
+                                        Run Simulation
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="simulation-option" data-type="credential_stuffing">
+                                <div class="option-icon">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="option-content">
+                                    <h4>Credential Stuffing</h4>
+                                    <p>Simulates rapid login attempts</p>
+                                    <button class="btn-simulate" data-type="credential_stuffing">
+                                        Run Simulation
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="simulation-option" data-type="data_exfiltration">
+                                <div class="option-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="option-content">
+                                    <h4>Data Exfiltration</h4>
+                                    <p>Simulates mass download of sensitive data</p>
+                                    <button class="btn-simulate" data-type="data_exfiltration">
+                                        Run Simulation
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="simulationResults" class="simulation-results" style="display: none;">
+                            <h4>Simulation Results</h4>
+                            <div id="resultsContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="system-status">
+                    <span class="status-dot active"></span>
+                    System Status: <span id="systemStatus">Operational</span>
+                </div>
+                <div class="footer-links">
+                    <span id="currentTime"></span>
+                    <span>|</span>
+                    <a href="#" id="refreshData"><i class="fas fa-sync-alt"></i> Refresh</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header alert">
+                <h3><i class="fas fa-exclamation-triangle"></i> Security Alert</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert-content">
+                    <div class="alert-icon">
+                        <i class="fas fa-shield-exclamation"></i>
+                    </div>
+                    <div class="alert-details">
+                        <h4 id="alertTitle">Anomaly Detected</h4>
+                        <p id="alertMessage">Unusual behavior pattern detected in your account.</p>
+                        <div class="alert-score">
+                            Anomaly Score: <span id="alertScore">0.85</span>
+                        </div>
+                        <div class="alert-recommendation">
+                            <strong>Recommended Action:</strong>
+                            <p id="alertAction">Please verify your recent activities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="acknowledgeAlert" class="btn-primary">Acknowledge</button>
+                <button id="viewDetails" class="btn-secondary">View Details</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="forceLogoutModal" class="modal">
+        <div class="modal-content critical">
+            <div class="modal-header critical">
+                <h3><i class="fas fa-ban"></i> Security Breach Detected</h3>
+            </div>
+            <div class="modal-body">
+                <div class="critical-alert">
+                    <div class="critical-icon">
+                        <i class="fas fa-skull-crossbones"></i>
+                    </div>
+                    <div class="critical-details">
+                        <h4>HIGH RISK BEHAVIOR DETECTED</h4>
+                        <p>The system has detected behavior consistent with a security threat.</p>
+                        <div class="critical-info">
+                            <p><i class="fas fa-exclamation-circle"></i> Your session has been terminated for security reasons.</p>
+                            <p><i class="fas fa-user-shield"></i> Administrator has been notified.</p>
+                            <p><i class="fas fa-history"></i> All activities have been logged for review.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="okLogout" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="./main.js"></script>
+</body>
+</html>
